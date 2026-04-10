@@ -54,7 +54,14 @@ Options:
   [\p{Han}\p{Hiragana}\p{Katakana}] # Только китайские/японские иероглифы
   [\p{Nd}\p{Sc}\p{Sm}]             # Цифры, валюты, математические символы
 
-  
+⚠️ Важное предупреждение для bash/zsh
+Оболочка может интерпретировать !, ^ или *. Всегда используйте одинарные кавычки:
+✅ Правильно
+--symbols '[^\p{Cyrillic}\p{Latin}]'
+
+❌ Неправильно (shell history expansion или globbing)
+--symbols [^\p{Cyrillic}\p{Latin}]
+--symbols "[^\p{Cyrillic}\p{Latin}]"
 
 === ИСТОЧНИКИ ДАННЫХ ===
 
@@ -98,6 +105,7 @@ Options:
 • В гибридном режиме кандидат приводится к lower-case перед стеммингом
 • Исходный регистр сохраняется в output для последующей разметки
 ```
+<img width="399" height="521" alt="image" src="https://github.com/user-attachments/assets/5905bbbc-99e6-483f-ace6-902dcda6696e" />
 
 Пример запуска для поиска восклицательного знака (по умолчанию этот символ ищет):
 ```
