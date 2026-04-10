@@ -128,5 +128,17 @@ rg -v "[!]\"" case-insensitive-fallback.\!.date18.jsonl|ug -o 'original_.*valida
 абиссинск!й              абиссинскій
 Абиссинск!й              Абиссинскій
 Абиссин!я                Абиссинія
+
+time zstdcat date18*.txt.zst|rg -v /blobs|sed 's/[—¬-] //g'|archaic-word-finder --stdin  --dictionary ~/.manuscript/weights/modern_words.txt --output case-insensitive-fallback.nonCyrillicLatin.date18.modern.jsonl --case-insensitive-fallback  --symbols '[^\p{Cyrillic}\p{Latin}]' --symbols-regex
+Инициализация словаря (гибридный=true)...
+Режим: чтение из stdin...
+[00:05:39] [██████████████████████████████████████████████████████████████████████████████████████] 90701/90701 строк | 267.2745/s | stdin: завершено
+Результаты сохранены в: case-insensitive-fallback.nonCyrillicLatin.date18.modern.jsonl
+Затраченное время: 387.81 сек
+
+real    6m47,328s
+user    21m0,121s
+sys     0m23,495s
+6,1G case-insensitive-fallback.nonCyrillicLatin.date18.modern.jsonl
 ```
 
