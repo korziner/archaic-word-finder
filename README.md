@@ -3,7 +3,8 @@
 <img width="1087" height="102" alt="image" src="https://github.com/user-attachments/assets/7632a354-74da-40ad-9a58-4d20cc4d05fc" />
 
 ```
-Поиск и валидация слов с архаичными/кастомными символами в больших текстовых корпусах
+Поиск и валидация слов с архаичными/кастомными символами
+
 Usage: archaic-word-finder [OPTIONS] --dictionary <DICTIONARY>
 
 Options:
@@ -12,7 +13,9 @@ Options:
       --dictionary <DICTIONARY>
           
       --symbols <SYMBOLS>
-          [default: !]
+          Шаблон символов: литерал или regex (зависит от --symbols-regex) [default: !]
+      --symbols-regex
+          Интерпретировать --symbols как регулярное выражение
       --utf-ranges <UTF_RANGES>
           [default: U+0456-U+0456,U+0438-U+0438,U+0435-U+0435]
       --max-consecutive <MAX_CONSECUTIVE>
@@ -24,7 +27,7 @@ Options:
       --max-combinations <MAX_COMBINATIONS>
           [default: 5000]
       --case-insensitive-fallback
-          Гибридный режим: fallback на lower-case при провале точного совпадения
+          
       --stdin
           Читать из stdin (альтернатива --corpus -)
   -h, --help
@@ -32,6 +35,26 @@ Options:
   -V, --version
           Print version
 
+
+=== СИМВОЛЫ ДЛЯ ПОИСКА (--symbols) ===
+
+Литеральный режим (по умолчанию):
+  --symbols "!?†"
+  • Проверка по точному совпадению символов (O(1), HashSet)
+  • Максимальная производительность
+
+Режим регулярного выражения (--symbols-regex):
+  --symbols '[^\p{Cyrillic}\p{Latin}]' --symbols-regex
+  • Поддержка Unicode-свойств: \p{Cyrillic}, \p{Latin}, \p{Nd}, \p{P} и др.
+  • Полезно для поиска иероглифов, цифр, спецсимволов, диакритики
+  • Производительность: ~1.2x медленнее литерального режима, но полностью гибко
+
+=== ПРИМЕРЫ РЕГУЛЯРОК ===
+  [^\p{Cyrillic}\p{Latin}]        # Всё, кроме кириллицы и латиницы
+  [\p{Han}\p{Hiragana}\p{Katakana}] # Только китайские/японские иероглифы
+  [\p{Nd}\p{Sc}\p{Sm}]             # Цифры, валюты, математические символы
+
+  
 
 === ИСТОЧНИКИ ДАННЫХ ===
 
