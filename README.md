@@ -128,7 +128,10 @@ rg -v "[!]\"" case-insensitive-fallback.\!.date18.jsonl|ug -o 'original_.*valida
 абиссинск!й              абиссинскій
 Абиссинск!й              Абиссинскій
 Абиссин!я                Абиссинія
-
+```
+Пример поиска всех не кириллических и не латинцы в составе слов.
+81 тысяча замен на корпус из 20+ тысяч книг, распознанных с ошибками OCR (за 6 минут):
+```
 time zstdcat date18*.txt.zst|rg -v /blobs|sed 's/[—¬-] //g'|archaic-word-finder --stdin  --dictionary ~/.manuscript/weights/modern_words.txt --output case-insensitive-fallback.nonCyrillicLatin.date18.modern.jsonl --case-insensitive-fallback  --symbols '[^\p{Cyrillic}\p{Latin}]' --symbols-regex
 Инициализация словаря (гибридный=true)...
 Режим: чтение из stdin...
@@ -139,6 +142,18 @@ time zstdcat date18*.txt.zst|rg -v /blobs|sed 's/[—¬-] //g'|archaic-word-find
 real    6m47,328s
 user    21m0,121s
 sys     0m23,495s
+
 6,1G case-insensitive-fallback.nonCyrillicLatin.date18.modern.jsonl
+
+time ug -o 'original_.*validation_' case-insensitive-fallback.nonCyrillicLatin.date18.modern.jsonl|cut -d\" -f3,9|sort -u|tr \" \\t|awk 'length($NF)>11'|column -t|cat -n
+...
+ 81523  яснополянск1й               яснополянский
+ 81524  Ястржембск1й                Ястржембский
+ 81525  Ястржембск1Й                ЯстржембскиЙ
+ 81526  Ястржембск]й                Ястржембский
+
+real    4m27,862s
+user    4m27,321s
+sys     0m5,775s
 ```
 
